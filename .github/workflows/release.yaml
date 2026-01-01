@@ -1,19 +1,18 @@
 name: Release
 
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        required: true
-        description: Release version
-      body:
-        required: true
-        description: Pull request body
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+      - release
 
 jobs:
   create-release:
     runs-on: ubuntu-latest
     environment: release
+    if: github.event_name == 'pull_request' && github.event.merged == true && contains(github.event.pull_request.labels.*.name, 'release')
     steps:
       - name: Generate GitHub token
         uses: actions/create-github-app-token@v2
@@ -21,18 +20,22 @@ jobs:
         with:
           app-id: ${{ secrets.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-      - name: Checkout
+      - name: Checkout Code
         uses: actions/checkout@v6
-      - name: Push new tag
+      - name: Extract version from PR title
+        id: tag
+        run: echo "${{ github.event.pull_request.title }}" | awk '{print "name="  $2}' >> "$GITHUB_OUTPUT"
+      - name: Push a new tag
+        id: tag_version
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ steps.generate-token.outputs.token }}
-          custom_tag: ${{ github.event.inputs.version }}
+          custom_tag: ${{ steps.tag.outputs.name }}
           tag_prefix: ""
-      - name: Create GitHub release
+      - name: Create a GitHub release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ steps.tag.outputs.name }}
-          name: Release ${{ github.event.inputs.version }}
-          body: ${{ github.event.inputs.body }}
+          name: ${{ github.event.pull_request.title }}
+          body: ${{ github.event.pull_request.body }}
           token: ${{ steps.generate-token.outputs.token }}
