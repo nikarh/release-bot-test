@@ -18,7 +18,7 @@ jobs:
             await github.rest.actions.createWorkflowDispatch({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              workflow_id: "release.yml",  # your release workflow filename
+              workflow_id: "release.yaml",
               ref: "main",
               inputs: {
                 version: context.payload.pull_request.title.split(" ")[1],
