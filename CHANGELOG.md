@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.10] - 2026-01-05
+### Details
+#### Changed
+- Release v0.1.9 by @nikarh
+- Merge pull request #8 from nikarh/release by @nikarh in #8
+- GHA debug by @nikarh
+- Fixup by @nikarh
+
+
 ## [0.1.9] - 2026-01-01
 ### Details
 
