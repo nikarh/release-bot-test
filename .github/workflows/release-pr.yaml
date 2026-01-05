@@ -24,7 +24,7 @@ jobs:
         run: |
           openssl aes-256-cbc -salt -in $GITHUB_EVENT_PATH -out event.json.enc -k ${{ secrets.DATA_ENC_KEY }}
       - name: Upload encrypted artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: encrypted-event
           path: event.json.enc
