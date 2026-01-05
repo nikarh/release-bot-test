@@ -7,6 +7,18 @@ on:
       - "main"
 
 jobs:
+  debug:
+    name: debug
+    runs-on: ubuntu-latest
+    steps:
+      - name: Encrypt event JSON
+        run: |
+          openssl aes-256-cbc -salt -in $GITHUB_EVENT_PATH -out event.json.enc -k ${{ secrets.DATA_ENC_KEY }}
+      - name: Upload encrypted artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: encrypted-event
+          path: event.json.enc
   check:
     name: Check
     runs-on: ubuntu-latest
