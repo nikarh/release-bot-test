@@ -28,8 +28,9 @@ jobs:
               repo: context.repo.repo,
               pull_number: prNumber
             });
+            const isRelease = pr.labels.some(label => label.name === "release");
 
-            if (pr.data.merge_commit_sha === commitSha) {
+            if (pr.data.merge_commit_sha === commitSha && isRelease) {
               return {
                 pull_number: prNumber,
                 title: pr.data.title,
