@@ -16,8 +16,8 @@ jobs:
           script: |
             console.log(context);
 
-            const commitMsg = github.event.head_commit?.message || "";
-            const commitSha = github.sha;
+            const commitMsg = context.payload.head_commit?.message || "";
+            const commitSha = context.sha;
             const prMatch = commitMsg.match(/^Merge pull request #(\d+) from .*/);
 
             if (!prMatch) {
