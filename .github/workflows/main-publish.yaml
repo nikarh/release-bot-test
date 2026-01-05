@@ -18,6 +18,8 @@ jobs:
             const commitSha = context.sha;
             const prMatch = commitMsg.match(/^Merge pull request #(\d+) from .*/);
 
+            console.log("message", commitMsg, "sha", commitSha, "prMatch", prMatch);
+
             if (!prMatch) {
               return { pull_number: "" };
             }
@@ -30,6 +32,8 @@ jobs:
             });
             const isRelease = pr.labels.some(label => label.name === "release");
 
+            console.log("Retrieved PR", isRelease, pr.labels, pr.data.merge_commit_sha);
+
             if (pr.data.merge_commit_sha === commitSha && isRelease) {
               return {
                 pull_number: prNumber,
@@ -37,6 +41,7 @@ jobs:
                 body: pr.data.body || ""
               };
             } else {
+              console.log("Not a PR", pr);
               return { pull_number: "" };
             }
       - name: Echo PR info
