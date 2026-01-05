@@ -14,8 +14,6 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            console.log(context);
-
             const commitMsg = context.payload.head_commit?.message || "";
             const commitSha = context.sha;
             const prMatch = commitMsg.match(/^Merge pull request #(\d+) from .*/);
@@ -40,7 +38,6 @@ jobs:
             } else {
               return { pull_number: "" };
             }
-
       - name: Echo PR info
         run: |
           if [[ "${{ steps.detect_pr.outputs.pull_number }}" != "" ]]; then
@@ -48,3 +45,4 @@ jobs:
             echo "${{ steps.detect_pr.outputs.body }}"
           else
             echo "Not a PR merge"
+          fi
