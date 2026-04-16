@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Detect PR merge and extract info
         id: detect_pr
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const commitMsg = context.payload.head_commit?.message || "";
